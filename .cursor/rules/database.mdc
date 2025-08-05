@@ -1,0 +1,43 @@
+---
+description: Database schema design, Supabase migrations, table creation/modification, RLS policy setup, database workflow automation, and PostgreSQL best practices implementation.
+alwaysApply: false
+---
+
+# Supabase Database Schema Rules
+
+## Schema Organization
+
+- Use **declarative database schemas** - never create migrations manually
+- Break schema files into separate concerns in `supabase/schemas/`:
+  - `tables.sql` - table definitions and constraints
+  - `indexes.sql` - performance indexes
+  - `triggers.sql` - database triggers and functions
+  - `rls.sql` - Row Level Security policies
+
+## Extensions
+
+- Do NOT install new extensions
+- UUID extension (`uuid-ossp`) is pre-installed and available
+
+## Database Workflow
+
+When updating database schema, follow this exact sequence:
+
+1. **Update schema files** in `supabase/schemas/` folder first
+2. **Generate migration**: `npm run db:diff -- -f <change_summary>` for change_summary use just a few words and snake_case naming
+3. **Apply migration**: `npm run db:migrate`
+4. **Update TypeScript types**: `npm run db:types`
+
+## Seed data
+
+If changes involve new tables or columns, update `supabase/seed/tables.sql` with appropriate sample data, ask user if they want to reset database with new seed data. If yes run `npm run db:reset`.
+
+## Best Practices
+
+- Use UUID primary keys with `uuid_generate_v4()`
+- Include `created_at` and `updated_at` timestamps with triggers
+- Always enable RLS on tables containing user data
+- Use descriptive constraint names and CHECK constraints for enums
+- Follow PostgreSQL naming conventions (snake_case)
+
+Refer to [Supabase Database docs](https://supabase.com/docs/guides/database) for PostgreSQL and Supabase best practices.

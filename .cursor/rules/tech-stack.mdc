@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+
+**Tech Stack Rules:**
+
+- **Runtime/Build**: Use npm, Vite, TypeScript, React 19
+- **Development**: Do not run `npm run dev`, it's always running in background
+- **Linting/Type Checks**: Run `npm run check` to lint, format, and type-check the codebase
+- **Routing**: React Router in Declarative mode using APIs like <BrowserRouter>, <Link>, useNavigate and useLocation
+- **Database**: Postgres database hosted at Supabase, database schema is in src/schema/tables.sql
+- **UI**: shadcn/ui (New York style) + Radix UI primitives + Tailwind CSS v4 with CSS variables
+- **Icons**: Lucide React (`lucide-react`)
+- **Backend**: Supabase PostgREST API accessed using `@supabase/supabase-js` library
