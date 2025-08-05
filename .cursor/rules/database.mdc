@@ -35,6 +35,7 @@ If changes involve new tables or columns, update `supabase/seed/tables.sql` with
 ## Best Practices
 
 - Use UUID primary keys with `uuid_generate_v4()`
+- Use TEXT instead of VARCHAR
 - Include `created_at` and `updated_at` timestamps with triggers
 - Always enable RLS on tables containing user data
 - Use descriptive constraint names and CHECK constraints for enums
