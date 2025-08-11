@@ -52,9 +52,10 @@ enabled = true
 # Supports glob patterns relative to supabase directory: "./schemas/*.sql"
 schema_paths = [
   "./schemas/tables.sql",
-  "./schemas/indexes.sql",
+  "./schemas/functions.sql",
   "./schemas/triggers.sql",
   "./schemas/rls.sql",
+  "./schemas/indexes.sql",
   "./schemas/*.sql",
 ]
 
@@ -64,9 +65,8 @@ enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory: "./seeds/*.sql"
 sql_paths = [
-  "./seed/auth.sql",
-  "./seed/tables.sql",
-  "./seed/*.sql",
+  "./seeds/init.sql",
+  "./seeds/*.sql",
 ]
 
 [db.network_restrictions]
