@@ -3,8 +3,7 @@ import * as RechartsPrimitive from "recharts";
 
 import { cn } from "@/lib/utils";
 
-// Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+type ThemeName = "light" | "dark";
 
 export type ChartConfig = {
   [k in string]: {
@@ -12,7 +11,7 @@ export type ChartConfig = {
     icon?: React.ComponentType;
   } & (
     | { color?: string; theme?: never }
-    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+    | { color?: never; theme: Record<ThemeName, string> }
   );
 };
 
@@ -69,35 +68,32 @@ function ChartContainer({
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
-    ([, config]) => config.theme || config.color,
+    ([, item]) => item.theme || item.color,
   );
 
   if (!colorConfig.length) {
     return null;
   }
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join("\n")}
-}
-`,
-          )
-          .join("\n"),
-      }}
-    />
-  );
+  const lightRules = colorConfig
+    .map(([key, itemConfig]) => {
+      const color = itemConfig.theme?.light || itemConfig.color;
+      return color ? `  --color-${key}: ${color};` : null;
+    })
+    .filter(Boolean)
+    .join("\n");
+
+  const darkRules = colorConfig
+    .map(([key, itemConfig]) => {
+      const color = itemConfig.theme?.dark || itemConfig.color;
+      return color ? `  --color-${key}: ${color};` : null;
+    })
+    .filter(Boolean)
+    .join("\n");
+
+  const cssContent = `[data-chart=${id}] {\n${lightRules}\n}\n.dark [data-chart=${id}] {\n${darkRules}\n}`;
+
+  return <style>{cssContent}</style>;
 };
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
@@ -343,9 +339,9 @@ function getPayloadConfigFromPayload(
 
 export {
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  ChartTooltip,
+  ChartTooltipContent,
 };
