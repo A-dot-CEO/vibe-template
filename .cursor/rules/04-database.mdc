@@ -1,5 +1,5 @@
 ---
-description: database
+description: Database schema design, migrations, Supabase usage, and workflow for making and applying database changes
 ---
 
 # Database and Supabase Conventions
@@ -16,6 +16,7 @@ description: database
   - Use TEXT instead of VARCHAR
   - Include `created_at` and `updated_at` timestamps with triggers
   - Follow PostgreSQL naming conventions (snake_case)
+  - Do not add comments, use descriptive names for funcitons, triggers and RLS policies
 
 # Schema Changes Workflow
 
